@@ -1,3 +1,22 @@
 #!/usr/bin/env python3
 
 
+import curses,time
+
+def main(stdscr):
+    stdscr.clear()
+    stdscr.refresh()
+    k=''
+    cx = cy = 0
+    while k != 'q':
+        k = stdscr.getkey()
+        height, width = stdscr.getmaxyx()
+        if k == 'KEY_UP':
+            cy += -1
+        
+
+
+if __name__ == "__main__":
+    curses.wrapper(main)
+    print('bye!')
+
