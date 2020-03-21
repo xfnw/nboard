@@ -15,7 +15,6 @@ def main(stdscr):
     cy = height // 2
     stdscr.move(cy,cx)
     while True:
-        k = stdscr.getkey()
 
         stdscr.clear()
 
@@ -36,15 +35,19 @@ def main(stdscr):
             stdscr.addstr(height-1, 0, 'Welcome to switch view mode. press an arrow key to move the view or a if you wanted a &'[:width-1])
             k = stdscr.getkey()
             if k == 'a':
-                pass
+                pass # il do this soon lol
             if k == 'KEY_UP':
                 vy += -1
+                cy = height
             if k == 'KEY_DOWN':
                 vy += 1
+                cy = 0
             if k == 'KEY_LEFT':
                 vx += -1
+                cx = width
             if k == 'KEY_RIGHT':
                 vx += 1
+                cx = 0
 
         # make sure the cursor is on the screen
         # this is not nessesary for the view as it is infinite
@@ -52,11 +55,21 @@ def main(stdscr):
         cx = min(width-1, cx)
 
         cy = max(0, cy)
-        cy = min(height-1, cy)
+        cy = min(height-2, cy)
 
         # calculate true position
         tx = cx + (vx * width) - width // 2
-        ty = cy + (vy * height) - height // 2
+        ty = cy + (vy * height) - (height-1) // 2
+
+        # get json data
+        
+
+        # draw the screen
+        stdscr.move(0, 0)
+        for y in range(height-1):
+            for x in range(width):
+                stdscr.addstr(data.get((ty - cy + y,tx - cx + x), ' '))
+
 
         # display some info
         stdscr.addstr(height-1, 0, 'x: {}, y: {}, arrow keys to move, & key to move to the next pane'.format(tx, ty)[:width-1]) 
@@ -67,6 +80,7 @@ def main(stdscr):
 
         #print(k) # debug keycodes
 
+        k = stdscr.getkey()
        
 
 
