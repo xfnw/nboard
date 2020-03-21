@@ -10,7 +10,7 @@ data = {}
 def main(stdscr):
     stdscr.clear()
     stdscr.refresh()
-    k=''
+    k='NOU'
     height, width = stdscr.getmaxyx()
     vx = vy = tx = ty = 0
     cx = width // 2
@@ -97,6 +97,8 @@ def main(stdscr):
 
 
 if __name__ == "__main__":
-    curses.wrapper(main)
-    print('bye!')
+    try:
+        curses.wrapper(main)
+    except KeyboardInterrupt:
+        print('bye!')
 
