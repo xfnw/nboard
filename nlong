@@ -4,6 +4,8 @@
 import curses,time,json
 
 dataPath = '/home/lickthecheese/nlong/nlong.json'
+allowedChars = " `~1234567890-=!@#$%^&*()_+qwertyuiop[]\\QWERTYUIOP{}|asdfghjkl;'ASDFGHJKL:\"zxcvbnm,./ZXCVBNM<>?"
+data = {}
 
 def main(stdscr):
     stdscr.clear()
@@ -35,7 +37,7 @@ def main(stdscr):
             stdscr.addstr(height-1, 0, 'Welcome to switch view mode. press an arrow key to move the view or a if you wanted a &'[:width-1])
             k = stdscr.getkey()
             if k == 'a':
-                pass # il do this soon lol
+                pass # il fix this later, but in the mean time, NO & FOR YOU
             if k == 'KEY_UP':
                 vy += -1
                 cy = height
@@ -62,13 +64,21 @@ def main(stdscr):
         ty = cy + (vy * height) - (height-1) // 2
 
         # get json data
+        with open(dataPath, 'r') as openfile:
+            data = json.load(openfile)
         
+        # if valid key pressed, write it
+        if k in allowedChars:
+            data[str((ty,tx))] = k
+            cx = min(width-1, cx+1)
+            with open(dataPath, 'w') as outfile:
+                json.dump(data, outfile)
 
         # draw the screen
         stdscr.move(0, 0)
         for y in range(height-1):
             for x in range(width):
-                stdscr.addstr(data.get((ty - cy + y,tx - cx + x), ' '))
+                stdscr.addstr(data.get(str((ty - cy + y,tx - cx + x)), ' '))
 
 
         # display some info
