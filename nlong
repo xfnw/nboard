@@ -73,11 +73,13 @@ def main(stdscr):
             cx = min(width-1, cx+1)
             with open(dataPath, 'w') as outfile:
                 json.dump(data, outfile)
+            tx = cx + (vx * width) - width // 2
 
         # draw the screen
         stdscr.move(0, 0)
         for y in range(height-1):
             for x in range(width):
+                stdscr.move(y,x)
                 stdscr.addstr(data.get(str((ty - cy + y,tx - cx + x)), ' '))
 
 
