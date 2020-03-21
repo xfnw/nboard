@@ -1,19 +1,73 @@
 #!/usr/bin/env python3
 
 
-import curses,time
+import curses,time,json
+
+dataPath = '/home/lickthecheese/nlong/nlong.json'
 
 def main(stdscr):
     stdscr.clear()
     stdscr.refresh()
     k=''
-    cx = cy = 0
-    while k != 'q':
+    height, width = stdscr.getmaxyx()
+    vx = vy = tx = ty = 0
+    cx = width // 2
+    cy = height // 2
+    stdscr.move(cy,cx)
+    while True:
         k = stdscr.getkey()
+
+        stdscr.clear()
+
         height, width = stdscr.getmaxyx()
+        
+        # detect where to move cursor
         if k == 'KEY_UP':
             cy += -1
-        
+        if k == 'KEY_DOWN':
+            cy += 1
+        if k == 'KEY_LEFT':
+            cx += -1
+        if k == 'KEY_RIGHT':
+            cx += 1
+
+        # enter view move mode
+        if k == '&':
+            stdscr.addstr(height-1, 0, 'Welcome to switch view mode. press an arrow key to move the view or a if you wanted a &'[:width-1])
+            k = stdscr.getkey()
+            if k == 'a':
+                pass
+            if k == 'KEY_UP':
+                vy += -1
+            if k == 'KEY_DOWN':
+                vy += 1
+            if k == 'KEY_LEFT':
+                vx += -1
+            if k == 'KEY_RIGHT':
+                vx += 1
+
+        # make sure the cursor is on the screen
+        # this is not nessesary for the view as it is infinite
+        cx = max(0, cx)
+        cx = min(width-1, cx)
+
+        cy = max(0, cy)
+        cy = min(height-1, cy)
+
+        # calculate true position
+        tx = cx + (vx * width) - width // 2
+        ty = cy + (vy * height) - height // 2
+
+        # display some info
+        stdscr.addstr(height-1, 0, 'x: {}, y: {}, arrow keys to move, & key to move to the next pane'.format(tx, ty)[:width-1]) 
+
+
+        # move the cursor where its actually supposed to be
+        stdscr.move(cy,cx)
+
+        #print(k) # debug keycodes
+
+       
 
 
 if __name__ == "__main__":
