@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 
 
-import curses,time,json
+import curses,time,json,sys
 
 dataPath = '/home/lickthecheese/nboard/nboard.json'
 allowedChars = " `~1234567890-=!@#$%^&*()_+qwertyuiop[]\\QWERTYUIOP{}|asdfghjkl;'ASDFGHJKL:\"zxcvbnm,./ZXCVBNM<>?"
 data = {}
 
 def main(stdscr):
-    stdscr.clear()
+    stdscr.erase()
     stdscr.refresh()
     k='NOU'
     height, width = stdscr.getmaxyx()
@@ -97,8 +97,21 @@ def main(stdscr):
 
 
 if __name__ == "__main__":
-    try:
-        curses.wrapper(main)
-    except KeyboardInterrupt:
-        print('bye!')
+    if len(sys.argv) > 1 and (sys.argv[1] == '--help' or sys.argv[1] == 'help'):
+        print("""
+nboard is like yourworldoftext.com, except its in a terminal.
+
+use the arrow keys to move arount, and to go to the next 'pane',
+press & (ampersand, usually shift+7 on standard us keyboards) and then
+an arrow key
+once you are in the place you want, you can start typing!
+
+please report any bugs to ~lickthecheese on IRC or on the github page,
+https://github.com/LickTheCheese/nboard
+""")
+    else:
+        try:
+            curses.wrapper(main)
+        except KeyboardInterrupt:
+            print('bye!')
 
