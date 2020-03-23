@@ -37,7 +37,7 @@ def main(stdscr):
             stdscr.addstr(height-1, 0, 'Welcome to switch view mode. press an arrow key to move the view or a if you wanted a &'[:width-1])
             k = stdscr.getkey()
             if k == 'a':
-                pass # il fix this later, but in the mean time, NO & FOR YOU
+                k = '&'
             if k == 'KEY_UP':
                 vy += -1
                 cy = height
