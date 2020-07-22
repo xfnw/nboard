@@ -13,7 +13,7 @@ def main(stdscr):
     stdscr.refresh()
     k='NOU'
     height, width = stdscr.getmaxyx()
-    vx = vy = tx = ty = 0
+    vx = vy = tx = ty = nl = 0
 
     cx = width // 2
     cy = height // 2
@@ -31,12 +31,21 @@ def main(stdscr):
         # detect where to move cursor
         if k == 'KEY_UP':
             vy += -1
+            nl = vx
         if k == 'KEY_DOWN':
             vy += 1
+            nl = vx
         if k == 'KEY_LEFT':
             vx += -1
+            nl = vx
         if k == 'KEY_RIGHT':
             vx += 1
+            nl = vx
+        if k == '\n':
+            vx = nl
+            vy += 1
+        if k == 'KEY_BACKSPACE':
+            vx += -1
 
         # make sure the cursor is on the screen
         # this is not nessesary for the view as it is infinite
