@@ -26,7 +26,8 @@ def main(stdscr):
         stdscr.clear()
 
         height, width = stdscr.getmaxyx()
-        
+
+
         # detect where to move cursor
         if k == 'KEY_UP':
             vy += -1
@@ -76,7 +77,7 @@ def main(stdscr):
         # move the cursor where its actually supposed to be
         stdscr.move(cy,cx)
 
-        #print(k) # debug keycodes
+        #print(str(k)) # debug keycodes
 
         k = stdscr.getkey()
        
@@ -87,13 +88,11 @@ if __name__ == "__main__":
         print("""
 nboard is like yourworldoftext.com, except its in a terminal.
 
-use the arrow keys to move arount, and to go to the next 'pane',
-press & (ampersand, usually shift+7 on standard us keyboards) and then
-an arrow key
+use the arrow keys to move arount
 once you are in the place you want, you can start typing!
 
-please report any bugs to ~lickthecheese on IRC or on the github page,
-https://github.com/LickTheCheese/nboard
+please report any bugs to ~xfnw on IRC or on the tildegit page,
+https://tildegit.org/xfnw/nboard
 """)
     else:
         try:
