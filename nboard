@@ -5,6 +5,7 @@ import curses,time,json,sys
 
 dataPath = '/home/lickthecheese/nboard/nboard.json'
 
+allowedChars = "█▒░ `~1234567890-=!@#$%^&*()_+qwertyuiop[]\\QWERTYUIOP{}|asdfghjkl;'ASDFGHJKL:\"zxcvbnm,./ZXCVBNM<>?"
 data = {}
 
 def main(stdscr):
@@ -63,7 +64,7 @@ def main(stdscr):
             data = json.load(openfile)
         
         # if valid key pressed, write it
-        if len(k) == 1:
+        if k in allowedChars:
             data[str((ty,tx))] = k
             vx = vx+1
             with open(dataPath, 'w') as outfile:
