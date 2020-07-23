@@ -89,7 +89,7 @@ def main(stdscr):
         #print(str(k)) # debug keycodes
 
         k = stdscr.getkey()
-       
+        time.sleep(0)
 
 
 if __name__ == "__main__":
