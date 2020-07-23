@@ -5,7 +5,7 @@ import curses,time,json,sys
 
 dataPath = '/home/lickthecheese/nboard/nboard.json'
 
-allowedChars = " `~1234567890-=!@#$%^&*()_+qwertyuiop[]\\QWERTYUIOP{}|asdfghjkl;'ASDFGHJKL:\"zxcvbnm,./ZXCVBNM<>?"
+allowedChars = "█▒░ `~1234567890-=!@#$%^&*()_+qwertyuiop[]\\QWERTYUIOP{}|asdfghjkl;'ASDFGHJKL:\"zxcvbnm,./ZXCVBNM<>?"
 data = {}
 
 def main(stdscr):
