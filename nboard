@@ -67,6 +67,7 @@ def main(stdscr):
         if k in allowedChars:
             data[str((ty,tx))] = k
             vx = vx+1
+            time.sleep(0)
             with open(dataPath, 'w') as outfile:
                 json.dump(data, outfile)
             tx = cx + (vx) - width // 2
