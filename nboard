@@ -46,16 +46,16 @@ def main(stdscr):
             vx += 1
             nl = vx
 
-        if k == '[1;5A':
+        if k == '[1;5A' or k == 'kUPS':
             vy += 0-(height//2)
             nl = vx
-        if k == '[1;5B':
+        if k == '[1;5B' or k == 'kDNS':
             vy += height//2
             nl = vx
-        if k == '[1;5D':
+        if k == '[1;5D' or k == 'kLFTS':
             vx += 0-(width//2)
             nl = vx
-        if k == '[1;5C':
+        if k == '[1;5C' or k == 'kRITS':
             vx += width//2
             nl = vx
 
