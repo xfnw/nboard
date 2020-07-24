@@ -3,7 +3,7 @@
 
 import curses,time,json,sys
 
-dataPath = '/home/lickthecheese/nboard/nboard.json'
+dataPath = '/home/xfnw/nboard/nboard.json'
 
 allowedChars = " `~1234567890-=!@#$%^&*()_+qwertyuiop[]\\QWERTYUIOP{}|asdfghjkl;'ASDFGHJKL:\"zxcvbnm,./ZXCVBNM<>?"
 data = {}
@@ -27,6 +27,10 @@ def main(stdscr):
 
         height, width = stdscr.getmaxyx()
 
+        if k == '\x1b':
+            k=""
+            for i in range(5):
+                k += stdscr.getkey()
 
         # detect where to move cursor
         if k == 'KEY_UP':
@@ -41,6 +45,20 @@ def main(stdscr):
         if k == 'KEY_RIGHT':
             vx += 1
             nl = vx
+
+        if k == '[1;5A':
+            vy += 0-(height//2)
+            nl = vx
+        if k == '[1;5B':
+            vy += height//2
+            nl = vx
+        if k == '[1;5D':
+            vx += 0-(width//2)
+            nl = vx
+        if k == '[1;5C':
+            vx += width//2
+            nl = vx
+
         if k == '\n':
             vx = nl
             vy += 1
