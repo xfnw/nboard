@@ -99,7 +99,7 @@ def main(stdscr):
 
 
         # display some info
-        stdscr.addstr(height-1, 0, 'x: {}, y: {}, arrow keys to move'.format(tx, 0-ty)[:width-1]) 
+        stdscr.addstr(height-1, 0, 'x: {}, y: {}, arrow keys to move'.format(tx, 1-ty)[:width-1]) 
 
 
         # move the cursor where its actually supposed to be
