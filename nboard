@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
 
-import curses,time,json,sys
+import curses,time,json,sys,os
 
-dataPath = '/home/xfnw/nboard/nboard.json'
+dataPath = os.path.expanduser('~')+'/.nboard/nboard.json'
 
 allowedChars = " `~1234567890-=!@#$%^&*()_+qwertyuiop[]\\QWERTYUIOP{}|asdfghjkl;'ASDFGHJKL:\"zxcvbnm,./ZXCVBNM<>?"
 data = {}
@@ -84,10 +84,12 @@ def main(stdscr):
         # if valid key pressed, write it
         if k in allowedChars:
             data[str((ty,tx))] = k
+            if k == ' ':
+                data.pop(str((ty,tx)))
             vx = vx+1
             time.sleep(0)
             with open(dataPath, 'w') as outfile:
-                json.dump(data, outfile)
+                json.dump(data, outfile, indent=1)
             tx = cx + (vx) - width // 2
 
         # draw the screen
@@ -116,11 +118,23 @@ if __name__ == "__main__":
         print("""
 nboard is like yourworldoftext.com, except its in a terminal.
 
+how to get started:
+if you do not want to start your own then you can
+`git clone /home/xfnw/.nboard .nboard` or if you want to start fresh
+make a directory '.nboard' in your homedir and put a json
+file named 'nboard.json' in it, and stick an empty dict
+inside it, eg '{}'.
+
+i would reccomend tracking it with git and adding remotes for other
+people who use nboard, and then you can `git pull --all` to add them all together.
+
+navagation:
 use the arrow keys to move arount
 once you are in the place you want, you can start typing!
 
 hold ctrl while pressing the arrow keys to go faster
 
+bugs and stuff:
 please report any bugs to ~xfnw on IRC, anywhere you can find him, or
 on the tildegit page, https://tildegit.org/xfnw/nboard
 """)
