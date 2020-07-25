@@ -99,7 +99,7 @@ def main(stdscr):
 
 
         # display some info
-        stdscr.addstr(height-1, 0, 'x: {}, y: {}, arrow keys to move'.format(tx, 1-ty)[:width-1]) 
+        stdscr.addstr(height-1, 0, 'x: {}, y: {}, arrow keys to move, ctrl to go faster'.format(tx, 1-ty)[:width-1]) 
 
 
         # move the cursor where its actually supposed to be
@@ -119,8 +119,10 @@ nboard is like yourworldoftext.com, except its in a terminal.
 use the arrow keys to move arount
 once you are in the place you want, you can start typing!
 
-please report any bugs to ~xfnw on IRC or on the tildegit page,
-https://tildegit.org/xfnw/nboard
+hold ctrl while pressing the arrow keys to go faster
+
+please report any bugs to ~xfnw on IRC, anywhere you can find him, or
+on the tildegit page, https://tildegit.org/xfnw/nboard
 """)
     else:
         try:
