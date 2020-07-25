@@ -62,7 +62,7 @@ def main(stdscr):
         if k == '\n':
             vx = nl
             vy += 1
-        if k == 'KEY_BACKSPACE':
+        if k == 'KEY_BACKSPACE' or k == '\x7f':
             vx += -1
 
         # make sure the cursor is on the screen
