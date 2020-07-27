@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 
-import curses,time,json,sys,os
+import curses,time,json,sys,os,subprocess
 
 dataPath = os.path.expanduser('~')+'/.nboard/nboard.json'
 
@@ -130,7 +130,7 @@ file named 'nboard.json' in it, and stick an empty dict
 inside it, eg '{}'.
 
 i would reccomend tracking it with git and adding remotes for other
-people who use nboard, and then you can `git pull --all` to add them all together.
+people who use nboard, and then you can `nboard pull` to add them all together.
 
 navagation:
 use the arrow keys to move arount
@@ -142,6 +142,11 @@ bugs and stuff:
 please report any bugs to ~xfnw on IRC, anywhere you can find him, or
 on the tildegit page, https://tildegit.org/xfnw/nboard
 """)
+    elif sys.argv[1] == 'pull':
+        branches=subprocess.run(['git','--dir-dir='+os.path.expanduser('~')+'/.nboard','for-each-ref','refs/remotes','--format','%(rename)'], capture_output=True).stdout.decode().splitlines()
+        subprocess.run(['git','--git-dir='+os.path.expanduser('~')+'/.nboard','pull','--all'])
+        subprocess.run(['git','--git-dir='+os.path.expanduser('~')+'/.nboard','merge']+branches)
+        print("pulled all remotes!")
     else:
         try:
             curses.wrapper(main)
