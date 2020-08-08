@@ -142,7 +142,7 @@ bugs and stuff:
 please report any bugs to ~xfnw on IRC, anywhere you can find him, or
 on the tildegit page, https://tildegit.org/xfnw/nboard
 """)
-    elif sys.argv[1] == 'pull':
+    elif len(sys.argv) > 1 and sys.argv[1] == 'pull':
         branches=subprocess.run(['git','--dir-dir='+os.path.expanduser('~')+'/.nboard','for-each-ref','refs/remotes','--format','%(rename)'], capture_output=True).stdout.decode().splitlines()
         subprocess.run(['git','--git-dir='+os.path.expanduser('~')+'/.nboard','pull','--all'])
         subprocess.run(['git','--git-dir='+os.path.expanduser('~')+'/.nboard','merge']+branches)
