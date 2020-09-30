@@ -143,9 +143,9 @@ please report any bugs to ~xfnw on IRC, anywhere you can find him, or
 on the tildegit page, https://tildegit.org/xfnw/nboard
 """)
     elif len(sys.argv) > 1 and sys.argv[1] == 'pull':
-        branches=subprocess.run(['git','--dir-dir='+os.path.expanduser('~')+'/.nboard','for-each-ref','refs/remotes','--format','%(rename)'], capture_output=True).stdout.decode().splitlines()
-        subprocess.run(['git','--git-dir='+os.path.expanduser('~')+'/.nboard','pull','--all'])
-        subprocess.run(['git','--git-dir='+os.path.expanduser('~')+'/.nboard','merge']+branches)
+        branches=subprocess.run(['git','--git-dir='+os.path.expanduser('~')+'/.nboard/.git','for-each-ref','refs/remotes','--format','%(refname)'], capture_output=True).stdout.decode().splitlines()
+        subprocess.run(['git','--git-dir='+os.path.expanduser('~')+'/.nboard/.git','fetch','--all'])
+        subprocess.run(['git','--git-dir='+os.path.expanduser('~')+'/.nboard/.git','merge']+branches)
         print("pulled all remotes!")
     else:
         try:
