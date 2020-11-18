@@ -16,4 +16,5 @@ for i in $(cat remotes.txt); do echo $i | xargs git remote add 2>/dev/null || ec
 
 which will go through all the remotes in remotes.txt and add them to git
 
+:D
 
