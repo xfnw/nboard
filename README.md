@@ -1,20 +1,19 @@
-# nboard
+# Nboard
 
-python curses based yourwalloftext clone
+Python curses based YourWallOftext clone
 
-## help
-read the --help text lol
+## Help
+Read the --help text lol
 
 
-## managing remotes
-to get more remotes, you can
+## Managing Remotes
+To get more remotes, you can
 
 ```bash
 for i in $(cat remotes.txt); do echo $i | xargs git remote add 2>/dev/null || echo $i | xargs git remote set-url ; done
 ```
-(command stolen from gitbbs lol)
+(Command stolen from gitbbs lol)
 
-which will go through all the remotes in remotes.txt and add them to git
+Which will go through all the remotes in remotes.txt and add them to git
 
-:D
 
