@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-
+# @JMW2020 5:15 PM CST 11/19/2020 Edit "Grammar and spelling fixes."
 import curses,time,json,sys,os,subprocess
 
 dataPath = os.path.expanduser('~')+'/.nboard/nboard.json'
@@ -122,25 +122,25 @@ if __name__ == "__main__":
         print("""
 nboard is like yourworldoftext.com, except its in a terminal.
 
-how to get started:
+How to get started:
 if you do not want to start your own then you can
 `git clone /home/xfnw/.nboard .nboard` or if you want to start fresh
 make a directory '.nboard' in your homedir and put a json
 file named 'nboard.json' in it, and stick an empty dict
 inside it, eg '{}'.
 
-i would reccomend tracking it with git and adding remotes for other
+I would recommend tracking it with git and adding remotes for other
 people who use nboard, and then you can `nboard pull` to add them all together.
 
-navagation:
-use the arrow keys to move arount
-once you are in the place you want, you can start typing!
+Navigation:
+Use the arrow keys to move arount
+Once you are in the place you want, you can start typing!
 
-hold ctrl while pressing the arrow keys to go faster
+Hold ctrl while pressing the arrow keys to go faster
 
-bugs and stuff:
-please report any bugs to ~xfnw on IRC, anywhere you can find him, or
-on the tildegit page, https://tildegit.org/xfnw/nboard
+Bugs And Stuff:
+Please report any bugs to ~xfnw on IRC, anywhere you can find him, or
+On the tildegit page, https://tildegit.org/xfnw/nboard
 """)
     elif len(sys.argv) > 1 and sys.argv[1] == 'pull':
         branches=subprocess.run(['git','--git-dir='+os.path.expanduser('~')+'/.nboard/.git','for-each-ref','refs/remotes','--format','%(refname)'], capture_output=True).stdout.decode().splitlines()
