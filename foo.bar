@@ -1,0 +1,9 @@
+# Foobar
+
+# Generic foo.bar for simultanious foobar.sh instances
+
+z = 1048
+allocate = z
+foobararch = 64bit *else* 32bit
+
+# This file only exists so that people an run this script in a foobar.sh instance
