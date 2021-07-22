@@ -10,6 +10,7 @@ data = {}
 
 def main(stdscr):
     curses.halfdelay(5)
+    curses.use_default_colors()
 
     stdscr.erase()
     stdscr.refresh()
@@ -116,7 +117,7 @@ def main(stdscr):
                 k = 'NOU'
             time.sleep(0)
         except json.decoder.JSONDecodeError:
-            time.sleep(0.5)
+            time.sleep(0.1)
 
 
 if __name__ == "__main__":
