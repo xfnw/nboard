@@ -30,10 +30,8 @@ def main(stdscr):
 
             height, width = stdscr.getmaxyx()
 
-            if k == '\x1b':
-                k=""
-                for i in range(5):
-                    k += stdscr.getkey()
+            if k == '\x0c':
+                stdscr.clear()
 
             # detect where to move cursor
             if k == 'KEY_UP':
