@@ -3,12 +3,14 @@
 
 import curses,time,json,sys,os,subprocess
 
-dataPath = os.path.expanduser('~')+'/.nboard/nboard.json'
+dataPath = '/home/xfnw/.nboard/nboard.json'
 
 allowedChars = " `~1234567890-=!@#$%^&*()_+qwertyuiop[]\\QWERTYUIOP{}|asdfghjkl;'ASDFGHJKL:\"zxcvbnm,./ZXCVBNM<>?"
 data = {}
 
 def main(stdscr):
+    curses.halfdelay(5)
+
     stdscr.erase()
     stdscr.refresh()
     k='NOU'
@@ -20,97 +22,103 @@ def main(stdscr):
 
     stdscr.move(cy,cx)
     while True:
-        cx = width // 2
-        cy = height // 2
+        try:
+            cx = width // 2
+            cy = height // 2
 
-        stdscr.clear()
+            #stdscr.clear()
 
-        height, width = stdscr.getmaxyx()
+            height, width = stdscr.getmaxyx()
 
-        if k == '\x1b':
-            k=""
-            for i in range(5):
-                k += stdscr.getkey()
+            if k == '\x1b':
+                k=""
+                for i in range(5):
+                    k += stdscr.getkey()
 
-        # detect where to move cursor
-        if k == 'KEY_UP':
-            vy += -1
-            nl = vx
-        if k == 'KEY_DOWN':
-            vy += 1
-            nl = vx
-        if k == 'KEY_LEFT':
-            vx += -1
-            nl = vx
-        if k == 'KEY_RIGHT':
-            vx += 1
-            nl = vx
+            # detect where to move cursor
+            if k == 'KEY_UP':
+                vy += -1
+                nl = vx
+            if k == 'KEY_DOWN':
+                vy += 1
+                nl = vx
+            if k == 'KEY_LEFT':
+                vx += -1
+                nl = vx
+            if k == 'KEY_RIGHT':
+                vx += 1
+                nl = vx
 
-        if k == '[1;5A' or k == 'kUP5':
-            vy += 0-(height//2)
-            nl = vx
-        if k == '[1;5B' or k == 'kDN5':
-            vy += height//2
-            nl = vx
-        if k == '[1;5D' or k == 'kLFT5':
-            vx += 0-(width//2)
-            nl = vx
-        if k == '[1;5C' or k == 'kRIT5':
-            vx += width//2
-            nl = vx
+            if k == '[1;5A' or k == 'kUP5':
+                vy += 0-(height//2)
+                nl = vx
+            if k == '[1;5B' or k == 'kDN5':
+                vy += height//2
+                nl = vx
+            if k == '[1;5D' or k == 'kLFT5':
+                vx += 0-(width//2)
+                nl = vx
+            if k == '[1;5C' or k == 'kRIT5':
+                vx += width//2
+                nl = vx
 
-        if k == '\n':
-            vx = nl
-            vy += 1
-        if k == 'KEY_BACKSPACE' or k == '\x7f':
-            vx += -1
+            if k == '\n':
+                vx = nl
+                vy += 1
+            if k == 'KEY_BACKSPACE' or k == '\x7f':
+                vx += -1
 
-        # make sure the cursor is on the screen
-        # this is not nessesary for the view as it is infinite
-        cx = max(0, cx)
-        cx = min(width-1, cx)
+            # make sure the cursor is on the screen
+            # this is not nessesary for the view as it is infinite
+            cx = max(0, cx)
+            cx = min(width-1, cx)
 
-        cy = max(0, cy)
-        cy = min(height-2, cy)
+            cy = max(0, cy)
+            cy = min(height-2, cy)
 
-        # calculate true position
-        tx = cx + (vx) - width // 2
-        ty = cy + (vy) - (height-1) // 2
-
-        # get json data
-        with open(dataPath, 'r') as openfile:
-            data = json.load(openfile)
-        
-        # if valid key pressed, write it
-        if k in allowedChars:
-            data[str((ty,tx))] = k
-            if k == ' ':
-                data.pop(str((ty,tx)))
-            vx = vx+1
-            time.sleep(0)
-            with open(dataPath, 'w') as outfile:
-                json.dump(data, outfile, indent=1)
+            # calculate true position
             tx = cx + (vx) - width // 2
+            ty = cy + (vy) - (height-1) // 2
 
-        # draw the screen
-        stdscr.move(0, 0)
-        for y in range(height-1):
-            for x in range(width):
-                stdscr.move(y,x)
-                stdscr.addstr(data.get(str((ty - cy + y,tx - cx + x)), ' '))
+            # get json data
+            with open(dataPath, 'r') as openfile:
+                data = json.load(openfile)
+            
+            # if valid key pressed, write it
+            if k in allowedChars:
+                data[str((ty,tx))] = k
+                if k == ' ':
+                    data.pop(str((ty,tx)))
+                vx = vx+1
+                time.sleep(0)
+                with open(dataPath, 'w') as outfile:
+                    json.dump(data, outfile, indent=1)
+                tx = cx + (vx) - width // 2
+
+            # draw the screen
+            stdscr.move(0, 0)
+            for y in range(height-1):
+                for x in range(width):
+                    stdscr.move(y,x)
+                    stdscr.addstr(data.get(str((ty - cy + y,tx - cx + x)), ' '))
 
 
-        # display some info
-        stdscr.addstr(height-1, 0, 'x: {}, y: {}, arrow keys to move, ctrl to go faster'.format(tx, 1-ty)[:width-1]) 
+            # display some info
+            stdscr.addstr(height-1, 0, 'x: {}, y: {}, arrow keys to move, ctrl to go faster  '.format(tx, 1-ty)[:width-1]) 
 
 
-        # move the cursor where its actually supposed to be
-        stdscr.move(cy,cx)
+            # move the cursor where its actually supposed to be
+            stdscr.move(cy,cx)
 
-        #print(str(k)) # debug keycodes
-
-        k = stdscr.getkey()
-        time.sleep(0)
+            #print(str(k)) # debug keycodes
+            
+            try:
+                k = stdscr.getkey()
+            except curses.error:
+                k = 'NOU'
+            time.sleep(0)
+        except json.decoder.JSONDecodeError:
+            time.sleep(0.5)
 
 
 if __name__ == "__main__":
