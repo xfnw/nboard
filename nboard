@@ -3,7 +3,7 @@
 
 import curses,time,json,sys,os,subprocess
 
-dataPath = '/home/xfnw/.nboard/nboard.json'
+dataPath = os.path.expanduser('~')+'/.nboard/nboard.json'
 
 allowedChars = " `~1234567890-=!@#$%^&*()_+qwertyuiop[]\\QWERTYUIOP{}|asdfghjkl;'ASDFGHJKL:\"zxcvbnm,./ZXCVBNM<>?"
 data = {}
