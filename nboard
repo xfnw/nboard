@@ -123,6 +123,10 @@ def main(stdscr):
 if __name__ == "__main__":
     try:
         dExists = os.path.isfile(dataPath)
+        if not dExists:
+            with open(dataPath, 'w') as f:
+                f.write('{}')
+                dExists = True
     except:
         dExists = False
     if not dExists or len(sys.argv) > 1 and (sys.argv[1] == '--help' or sys.argv[1] == 'help'):
