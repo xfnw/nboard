@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 
 
-import curses,time,json,sys,os,subprocess
+import curses, time, json, sys, os, subprocess
 
-dataPath = os.path.expanduser('~')+'/.nboard/nboard.json'
+dataPath = os.path.expanduser("~") + "/.nboard/nboard.json"
 
 allowedChars = " `~1234567890-=!@#$%^&*()_+qwertyuiop[]\\QWERTYUIOP{}|asdfghjkl;'ASDFGHJKL:\"zxcvbnm,./ZXCVBNM<>?"
 data = {}
+
 
 def main(stdscr):
     curses.halfdelay(5)
@@ -14,107 +15,111 @@ def main(stdscr):
 
     stdscr.erase()
     stdscr.refresh()
-    k='NOU'
+    k = "NOU"
     height, width = stdscr.getmaxyx()
     vx = vy = tx = ty = nl = 0
 
     cx = width // 2
     cy = height // 2
 
-    stdscr.move(cy,cx)
+    stdscr.move(cy, cx)
     while True:
         try:
             cx = width // 2
             cy = height // 2
 
-            #stdscr.clear()
+            # stdscr.clear()
 
             height, width = stdscr.getmaxyx()
 
-            if k == '\x0c':
+            if k == "\x0c":
                 stdscr.clear()
 
             # detect where to move cursor
-            if k == 'KEY_UP':
+            if k == "KEY_UP":
                 vy += -1
                 nl = vx
-            if k == 'KEY_DOWN':
+            if k == "KEY_DOWN":
                 vy += 1
                 nl = vx
-            if k == 'KEY_LEFT':
+            if k == "KEY_LEFT":
                 vx += -1
                 nl = vx
-            if k == 'KEY_RIGHT':
+            if k == "KEY_RIGHT":
                 vx += 1
                 nl = vx
 
-            if k == '[1;5A' or k == 'kUP5':
-                vy += 0-(height//2)
+            if k == "[1;5A" or k == "kUP5":
+                vy += 0 - (height // 2)
                 nl = vx
-            if k == '[1;5B' or k == 'kDN5':
-                vy += height//2
+            if k == "[1;5B" or k == "kDN5":
+                vy += height // 2
                 nl = vx
-            if k == '[1;5D' or k == 'kLFT5':
-                vx += 0-(width//2)
+            if k == "[1;5D" or k == "kLFT5":
+                vx += 0 - (width // 2)
                 nl = vx
-            if k == '[1;5C' or k == 'kRIT5':
-                vx += width//2
+            if k == "[1;5C" or k == "kRIT5":
+                vx += width // 2
                 nl = vx
 
-            if k == '\n':
+            if k == "\n":
                 vx = nl
                 vy += 1
-            if k == 'KEY_BACKSPACE' or k == '\x7f':
+            if k == "KEY_BACKSPACE" or k == "\x7f":
                 vx += -1
 
             # make sure the cursor is on the screen
             # this is not nessesary for the view as it is infinite
             cx = max(0, cx)
-            cx = min(width-1, cx)
+            cx = min(width - 1, cx)
 
             cy = max(0, cy)
-            cy = min(height-2, cy)
+            cy = min(height - 2, cy)
 
             # calculate true position
             tx = cx + (vx) - width // 2
-            ty = cy + (vy) - (height-1) // 2
+            ty = cy + (vy) - (height - 1) // 2
 
             # get json data
-            with open(dataPath, 'r') as openfile:
+            with open(dataPath, "r") as openfile:
                 data = json.load(openfile)
-            
+
             # if valid key pressed, write it
             if k in allowedChars:
-                data[str((ty,tx))] = k
-                if k == ' ':
-                    data.pop(str((ty,tx)))
-                vx = vx+1
+                data[str((ty, tx))] = k
+                if k == " ":
+                    data.pop(str((ty, tx)))
+                vx = vx + 1
                 time.sleep(0)
-                with open(dataPath, 'w') as outfile:
+                with open(dataPath, "w") as outfile:
                     json.dump(data, outfile, indent=1)
                 tx = cx + (vx) - width // 2
 
             # draw the screen
             stdscr.move(0, 0)
-            for y in range(height-1):
+            for y in range(height - 1):
                 for x in range(width):
-                    stdscr.move(y,x)
-                    stdscr.addstr(data.get(str((ty - cy + y,tx - cx + x)), ' '))
-
+                    stdscr.move(y, x)
+                    stdscr.addstr(data.get(str((ty - cy + y, tx - cx + x)), " "))
 
             # display some info
-            stdscr.addstr(height-1, 0, 'x: {}, y: {}, arrow keys to move, ctrl to go faster  '.format(tx, 1-ty)[:width-1]) 
-
+            stdscr.addstr(
+                height - 1,
+                0,
+                "x: {}, y: {}, arrow keys to move, ctrl to go faster  ".format(
+                    tx, 1 - ty
+                )[: width - 1],
+            )
 
             # move the cursor where its actually supposed to be
-            stdscr.move(cy,cx)
+            stdscr.move(cy, cx)
 
-            #print(str(k)) # debug keycodes
-            
+            # print(str(k)) # debug keycodes
+
             try:
                 k = stdscr.getkey()
             except curses.error:
-                k = 'NOU'
+                k = "NOU"
             time.sleep(0)
         except json.decoder.JSONDecodeError:
             time.sleep(0.1)
@@ -124,13 +129,18 @@ if __name__ == "__main__":
     try:
         dExists = os.path.isfile(dataPath)
         if not dExists:
-            with open(dataPath, 'w') as f:
-                f.write('{}')
+            with open(dataPath, "w") as f:
+                f.write("{}")
                 dExists = True
     except:
         dExists = False
-    if not dExists or len(sys.argv) > 1 and (sys.argv[1] == '--help' or sys.argv[1] == 'help'):
-        print("""
+    if (
+        not dExists
+        or len(sys.argv) > 1
+        and (sys.argv[1] == "--help" or sys.argv[1] == "help")
+    ):
+        print(
+            """
 nboard is like yourworldoftext.com, except its in a terminal.
 
 how to get started:
@@ -152,15 +162,39 @@ hold ctrl while pressing the arrow keys to go faster
 bugs and stuff:
 please report any bugs to ~xfnw on IRC, anywhere you can find him, or
 on the tildegit page, https://tildegit.org/xfnw/nboard
-""")
-    elif len(sys.argv) > 1 and sys.argv[1] == 'pull':
-        branches=subprocess.run(['git','--git-dir='+os.path.expanduser('~')+'/.nboard/.git','for-each-ref','refs/remotes','--format','%(refname)'], capture_output=True).stdout.decode().splitlines()
-        subprocess.run(['git','--git-dir='+os.path.expanduser('~')+'/.nboard/.git','fetch','--all'])
-        subprocess.run(['git','--git-dir='+os.path.expanduser('~')+'/.nboard/.git','merge']+branches)
+"""
+        )
+    elif len(sys.argv) > 1 and sys.argv[1] == "pull":
+        branches = (
+            subprocess.run(
+                [
+                    "git",
+                    "--git-dir=" + os.path.expanduser("~") + "/.nboard/.git",
+                    "for-each-ref",
+                    "refs/remotes",
+                    "--format",
+                    "%(refname)",
+                ],
+                capture_output=True,
+            )
+            .stdout.decode()
+            .splitlines()
+        )
+        subprocess.run(
+            [
+                "git",
+                "--git-dir=" + os.path.expanduser("~") + "/.nboard/.git",
+                "fetch",
+                "--all",
+            ]
+        )
+        subprocess.run(
+            ["git", "--git-dir=" + os.path.expanduser("~") + "/.nboard/.git", "merge"]
+            + branches
+        )
         print("pulled all remotes!")
     else:
         try:
             curses.wrapper(main)
         except KeyboardInterrupt:
-            print('bye!')
-
+            print("bye!")
