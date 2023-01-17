@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 
 
-import curses, time, json, sys, os, subprocess
+import curses, locale, time, json, sys, os, subprocess
 
 dataPath = os.path.expanduser("~") + "/.nboard/nboard.json"
 
 allowedChars = " `~1234567890-=!@#$%^&*()_+qwertyuiop[]\\QWERTYUIOP{}|asdfghjkl;'ASDFGHJKL:\"zxcvbnm,./ZXCVBNM<>?"
 data = {}
 
+locale.setlocale(locale.LC_ALL, '')
 
 def main(stdscr):
     curses.halfdelay(5)
@@ -84,8 +85,18 @@ def main(stdscr):
             with open(dataPath, "r") as openfile:
                 data = json.load(openfile)
 
+            isUnicode = False
+
+            if k == 'â':
+                k += chr(stdscr.getch() & 0xff)
+                k += chr(stdscr.getch() & 0xff)
+
+                k = bytes(k, "ISO-8859-1").decode("utf-8")
+
+                isUnicode = True
+
             # if valid key pressed, write it
-            if k in allowedChars:
+            if k in allowedChars or isUnicode:
                 data[str((ty, tx))] = k
                 if k == " ":
                     data.pop(str((ty, tx)))
